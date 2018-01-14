@@ -1,4 +1,10 @@
-# TextClassify
+# Deep Learning Projects
 
-Using Keras to classify incoming emails as [request to reset password] / [or not]
+This repository is a collection of my DL projects.
+
+I use Python 3 with Keras and a TensorFlow backend.
+
+## Contents:
+* feed_forward
+  * MNIST: this is a basic feed-forward implementation of a handwritten digit classifier.
 
