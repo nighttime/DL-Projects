@@ -19,11 +19,6 @@ class colors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-#################################################################
-# Functions
-#################################################################
-
-
 
 #################################################################
 # Data and Hyperparameters
@@ -41,13 +36,6 @@ flat_img_size = data_shape[0] * data_shape[1]
 # xs_train, xs_test : [float] @shape(sample_size, 784) @range[0,1.0]
 xs_train = np.reshape(xs_train, [-1, flat_img_size]).astype(float) / 255.0
 xs_test = np.reshape(xs_test, [-1, flat_img_size])
-
-# Adam BEST RUN (97.04%)
-# epochs = 4
-# batch_size = 8
-# lr = 0.005
-# dropout = 0.3
-# hidden = 450
 
 epochs = 5
 batch_size = 8
@@ -109,7 +97,12 @@ print(colors.OKGREEN + colors.BOLD + 'Test Accuracy: {:.2%}'.format(scores[1]) +
 print(colors.OKBLUE + 'epochs={} batch_size={} hidden={} opt=adam lr={}'.format(epochs, batch_size, hidden_layer_1_size, lr) + colors.ENDC)
 print()
 
-
+# Adam optimizer BEST RUN (97.04%)
+# epochs = 4
+# batch_size = 8
+# lr = 0.005
+# dropout = 0.3
+# hidden_layer_1_size = 450
 
 
 
