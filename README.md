@@ -5,6 +5,6 @@ This repository is a collection of my DL projects.
 I use Python 3 with Keras and a TensorFlow backend.
 
 ## Contents:
-* MNIST
-  * feed_forward: this is a basic feed-forward implementation of a handwritten digit classifier.
+* MNIST digit classification
+  * feed_forward: this is a 2-layer, feed-forward network for handwritten digit classification (achieves 97.04% accuracy)
 
