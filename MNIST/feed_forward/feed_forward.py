@@ -25,6 +25,7 @@ class colors:
 #################################################################
 
 debug = False
+plot = True
 
 # xs_train, xs_test : [uint8] @shape(sample_size, 28, 28)
 # ys_train, ys_test : [uint8] @shape(sample_size,) @range[0,9]
@@ -59,10 +60,13 @@ if debug:
 
 model = Sequential()
 
-# Add a basic dense layer with nonlinearity
-model.add(Dense(hidden_layer_1_size, input_shape=(flat_img_size,), activation='sigmoid'))
+# Add a basic dense layer
+model.add(Dense(hidden_layer_1_size, input_shape=(flat_img_size,)))
 
-# Add a minor dropout to weaken interdependence of neurons
+# Add a nonlinear activation layer
+model.add(Activation('sigmoid'))
+
+# Add a small dropout to weaken learned co-occurrence of layer 1 neurons
 model.add(Dropout(hidden_layer_1_dropout))
 
 # Add a final dense layer
@@ -75,6 +79,11 @@ model.compile(loss='sparse_categorical_crossentropy', optimizer=optimizers.Adam(
 
 model.summary()
 
+if plot:
+	from keras.utils import plot_model
+	plot_model(model, show_shapes=True, to_file='model.png')
+	print('generated chart of the model')
+	exit(0)
 
 #################################################################
 # Training Phase
