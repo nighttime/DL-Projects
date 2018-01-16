@@ -19,7 +19,6 @@ class colors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-
 #################################################################
 # Data and Hyperparameters
 #################################################################
@@ -32,17 +31,16 @@ plot = False
 (xs_train, ys_train), (xs_test, ys_test) = mnist.load_data()
 
 data_shape = np.shape(xs_train)[1:]
-flat_img_size = data_shape[0] * data_shape[1]
 
 # xs_train, xs_test : [float] @shape(sample_size, 784) @range[0,1.0]
-xs_train = np.reshape(xs_train, [-1, flat_img_size]).astype(float) / 255.0
-xs_test = np.reshape(xs_test, [-1, flat_img_size]).astype(float) / 255.0
+xs_train = np.expand_dims(xs_train, -1).astype(float) / 255.0
+xs_test = np.expand_dims(xs_test, -1).astype(float) / 255.0
 
-epochs = 4
-batch_size = 10
-lr = 0.005
+epochs = 1
+batch_size = 20
+lr = 1e-4
 
-hidden_layer_1_size = 450
+hidden_layer_1_size = 600
 hidden_layer_1_dropout = 0.3
 num_classes = 10
 
@@ -50,7 +48,7 @@ if debug:
 	xs_train = xs_train[:10000,:]
 	ys_train = ys_train[:10000]
 	epochs = 1
-	batch_size = 32
+	batch_size = 20
 	hidden_layer_1_dropout = 0
 
 
@@ -60,21 +58,21 @@ if debug:
 
 model = Sequential()
 
-# Add a basic dense layer
-model.add(Dense(hidden_layer_1_size, input_shape=(flat_img_size,)))
+model.add(Conv2D(32, (7,7), padding='same', input_shape=(data_shape[0], data_shape[1], 1)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(padding='same'))
 
-# Add a nonlinear activation layer
-model.add(Activation('sigmoid'))
+model.add(Conv2D(64, (4,4), padding='same'))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(padding='same'))
 
-# Add a small dropout to weaken learned co-occurrence of layer 1 neurons
+model.add(Reshape((7 * 7 * 64,)))
+
+model.add(Dense(hidden_layer_1_size))
+model.add(Activation('relu'))
 model.add(Dropout(hidden_layer_1_dropout))
-
-# Add a final dense layer
 model.add(Dense(num_classes, activation='softmax'))
 
-# Use sparse categorical crossentropy as our loss function, since we have
-# output : [probability] @shape(10,)
-# target : integer label (note: NOT one-hot vector)
 model.compile(loss='sparse_categorical_crossentropy', optimizer=optimizers.Adam(lr=0.005), metrics=['accuracy'])
 
 model.summary()
@@ -108,12 +106,7 @@ print()
 
 # Adam optimizer BEST RUN (97.04%)
 # epochs = 4
-# batch_size = 10
+# batch_size = 8
 # lr = 0.005
 # dropout = 0.3
 # hidden_layer_1_size = 450
-
-
-
-
-
