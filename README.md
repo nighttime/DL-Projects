@@ -11,6 +11,7 @@ Run any model like this:
 * __MNIST handwritten digit classification__
   * `MNIST-feed_forward`: a 2-layer, feed-forward network architecture (achieves 97.34% accuracy)
   * `MNIST-conv`: a convolutional network architecture
+  * `MNIST-maxout-ff`: a network of Maxout neurons arranged in a dense, feed forward architecture
 * __ModelDetails: Full writeup for each model implemented here__
   * `README-MINST-feed_forward`
   * `README-MINST-conv`
