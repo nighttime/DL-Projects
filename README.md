@@ -15,3 +15,4 @@ Run any model like this:
 * __ModelDetails: Full writeup for each model implemented here__
   * `README-MINST-feed_forward`
   * `README-MINST-conv`
+  * `README-MNIST-maxout`

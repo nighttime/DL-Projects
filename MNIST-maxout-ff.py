@@ -17,22 +17,22 @@ import numpy as np
 # Model Hyperparameters
 #################################################################
 
-epochs = 1
+epochs = 5
 batch_size = 40
 lr = 0.0005
 
-hidden_layer_1_size = 500
-hidden_layer_1_dropout = 0.3
+hidden_layer_1_size = 50
+num_competitors = 2
+
 num_classes = 10
 
 
-# Adam optimizer BEST RUN (98.15%)
+# Adam optimizer BEST RUN (97.28%)
 # epochs = 5
 # batch_size = 40
 # lr = 0.0005
-# dropout = 0.3
-# hidden_layer_1_size = 500
-# hidden_layer_1_activation = PReLU
+# hidden_layer_1_size = 50
+# number of competing weights = 2
 
 
 #################################################################
@@ -42,7 +42,9 @@ num_classes = 10
 def build_model(data_shape):
 	model = Sequential()
 
-	model.add(DenseMaxout(hidden_layer_1_size, 2, input_shape=data_shape))
+	model.add(Maxout(hidden_layer_1_size, num_competitors, input_shape=data_shape))
+
+	# model.add(Maxout(hidden_layer_2_size, 2))
 
 	# Add a final dense layer
 	model.add(Dense(num_classes, activation='softmax'))
@@ -50,7 +52,9 @@ def build_model(data_shape):
 	# Use sparse categorical crossentropy as our loss function, since we have
 	# output : [probability] @shape(10,)
 	# target : integer label (note: NOT one-hot vector)
-	model.compile(loss='sparse_categorical_crossentropy', optimizer=optimizers.Adam(lr=lr), metrics=['accuracy'])
+	model.compile(loss='sparse_categorical_crossentropy', 
+		optimizer=optimizers.Adam(lr=lr), 
+		metrics=['accuracy'])
 
 	return model
 
@@ -78,7 +82,7 @@ def main():
 
 	if args.p:
 		model.summary()
-		viz_model(model)
+		viz_model(model, name='maxout_net.png')
 		exit(0)
 
 	train(model, train_data)
