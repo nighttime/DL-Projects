@@ -1,5 +1,6 @@
 from support.output import *
 from support.data import *
+from keras_extensions.train import *
 
 import argparse
 
@@ -16,7 +17,7 @@ import numpy as np
 # Model Hyperparameters
 #################################################################
 
-epochs = 2
+epochs = 13
 batch_size = 40
 lr = 1e-4
 
@@ -48,16 +49,18 @@ def build_model(data_shape):
 
 	model.add(Conv2D(32, (6,6), padding='same', input_shape=(data_shape[0], data_shape[1], 1)))
 	model.add(Activation('relu'))
+	model.add(Dropout(hidden_layer_1_dropout))
 	model.add(MaxPooling2D(padding='same'))
 
 	model.add(Conv2D(64, (4,4), padding='same'))
 	model.add(Activation('relu'))
+	model.add(Dropout(hidden_layer_1_dropout))
 	model.add(MaxPooling2D(padding='same'))
 
 	model.add(Reshape((7 * 7 * 64,)))
 
-	model.add(Dense(hidden_layer_1_size))
-	model.add(Activation('relu'))
+	# model.add(Dense(hidden_layer_1_size))
+	# model.add(Activation('relu'))
 	model.add(Dropout(hidden_layer_1_dropout))
 	model.add(Dense(num_classes, activation='softmax'))
 
@@ -65,8 +68,9 @@ def build_model(data_shape):
 
 	return model
 
-def train(model, train_data):
+def train(model, train_data, test_data):
 	print('\n=== Training ===')
+	testChecker = TestSetCallback(test_data)
 	model.fit(train_data[0], train_data[1], epochs=epochs, batch_size=batch_size)
 
 def test(model, test_data):
@@ -92,7 +96,7 @@ def main():
 		viz_model(model)
 		exit(0)
 
-	train(model, train_data)
+	train(model, train_data, test_data)
 	test(model, test_data)
 
 

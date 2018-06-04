@@ -1,6 +1,7 @@
 from support.output import *
 from support.data import *
 from keras_extensions.maxout import *
+from keras_extensions.train import *
 
 import argparse
 
@@ -58,9 +59,10 @@ def build_model(data_shape):
 
 	return model
 
-def train(model, train_data):
+def train(model, train_data, test_data):
 	print('\n=== Training ===')
-	model.fit(train_data[0], train_data[1], epochs=epochs, batch_size=batch_size)
+	testChecker = TestSetCallback(test_data)
+	model.fit(train_data[0], train_data[1], epochs=epochs, batch_size=batch_size, callbacks=[testChecker])
 
 def test(model, test_data):
 	print('\n=== Testing ===')
@@ -85,7 +87,7 @@ def main():
 		viz_model(model, name='maxout_net.png')
 		exit(0)
 
-	train(model, train_data)
+	train(model, train_data, test_data)
 	test(model, test_data)
 
 
