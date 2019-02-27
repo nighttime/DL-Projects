@@ -1,6 +1,6 @@
 # Deep Learning Projects
 
-This repository is a collection of my DL projects.
+This repository is a collection of several deep learning demo projects.
 
 I use Python 3 with Keras and a TensorFlow backend.
 
